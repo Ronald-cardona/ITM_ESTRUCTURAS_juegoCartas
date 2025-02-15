@@ -12,7 +12,9 @@ import javax.swing.WindowConstants;
 
 public class FrmJuego extends JFrame {
     
-    JPanel pnlJugador1;
+    JPanel pnlJugador1; // lo declaramos global para que lo reconozca en otros metodos
+    JPanel pnlJugador2; 
+
 
     public FrmJuego() {
         setSize(700, 250);
@@ -36,7 +38,7 @@ public class FrmJuego extends JFrame {
         pnlJugador1.setBackground(new Color(16, 139, 37));
         pnlJugador1.setLayout(null);
 
-        JPanel pnlJugador2 = new JPanel();
+        pnlJugador2 = new JPanel();
         pnlJugador2.setBackground(new Color(0, 255, 255));
         pnlJugador2.setLayout(null);
 
@@ -57,13 +59,16 @@ public class FrmJuego extends JFrame {
             }
         });
     }
+    Jugador jugador1 = new Jugador(); //instanciamos jugador para que se repartan las cartas
+    Jugador jugador2 = new Jugador();
 
     private void repartirCartas() {
-        pnlJugador1.removeAll();
-        Carta carta = new Carta(new Random());
-        carta.mostrar(pnlJugador1, 10, 10);
+        jugador1.repartir();//repartir jugador 1
+        jugador1.mostrar(pnlJugador1); //mostrar cartas 1
 
-        JOptionPane.showMessageDialog(null, carta.getNombre() + " " + carta.getPinta());
+        jugador2.repartir(); //repartir jugador 2
+        jugador2.mostrar(pnlJugador2);//mostrar cartas 2
+       
     }
 
     private void verificarJugador() {
