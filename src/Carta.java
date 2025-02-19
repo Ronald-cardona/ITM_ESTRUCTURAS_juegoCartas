@@ -7,18 +7,19 @@ import javax.swing.JPanel;
 public class Carta {
     private int indice; //atributo 
 
-    public Carta(Random r) {
-        indice = r.nextInt(52) + 1;
+    //metodo donde declaramos como va a funcionar el indice 
+    public Carta(Random r) { //le generamos un random al metodo porque siempre sera aleatorio 
+        indice = r.nextInt(52) + 1; //son 52 cartas en total 
     }
     //metodo para obtener la pinta
     public Pinta getPinta() {
-        if (indice <= 13) {
-            return Pinta.TREBOL;
+        if (indice <= 13) { // si el indice es menor o igual a 13
+            return Pinta.TREBOL; //retornaremos del enumerado Pinta, el trebol
         } else if (indice <= 26) {
             return Pinta.PICA;
         } else if (indice <= 39) {
             return Pinta.CORAZON;
-        } else {
+        } else {                    // si ninguna de las condiciones anteriores se cumplen la pinta sera diamante
             return Pinta.DIAMANTE;
         }
     }

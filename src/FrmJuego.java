@@ -14,7 +14,7 @@ public class FrmJuego extends JFrame {
     
     JPanel pnlJugador1; // lo declaramos global para que lo reconozca en otros metodos
     JPanel pnlJugador2; 
-
+    JTabbedPane tpJugadores;
 
     public FrmJuego() {
         setSize(700, 250);
@@ -22,39 +22,43 @@ public class FrmJuego extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
-        JButton btnRepartir = new JButton("Repartir");
-        btnRepartir.setBounds(10, 10, 100, 25);
-        getContentPane().add(btnRepartir);
+        //boton repartir
+        JButton btnRepartir = new JButton("Repartir"); //funcion para  el texto  del boton
+        btnRepartir.setBounds(10, 10, 100, 25); //lugar donde el boton estara
+        getContentPane().add(btnRepartir); //funcion para agregar el boton 
 
+        //boton verificar 
         JButton btnVerificar = new JButton("Verificar");
         btnVerificar.setBounds(120, 10, 100, 25);
         getContentPane().add(btnVerificar);
 
-        JTabbedPane tpJugadores = new JTabbedPane();
+        tpJugadores = new JTabbedPane();
         tpJugadores.setBounds(10, 40, 650, 150);
         getContentPane().add(tpJugadores);
 
-        pnlJugador1 = new JPanel();
-        pnlJugador1.setBackground(new Color(16, 139, 37));
+        //panel para el jugador 1 (pestaña)
+        pnlJugador1 = new JPanel(); 
+        pnlJugador1.setBackground(new Color(16, 139, 37)); //fondo de color para el jugador 
         pnlJugador1.setLayout(null);
 
-        pnlJugador2 = new JPanel();
+        //panel para el jugador 2 (pestaña)
+        pnlJugador2 = new JPanel(); 
         pnlJugador2.setBackground(new Color(0, 255, 255));
-        pnlJugador2.setLayout(null);
+        pnlJugador2.setLayout(null); 
 
-        tpJugadores.addTab("Martín Estrada Contreras", pnlJugador1);
-        tpJugadores.addTab("Raúl Vidal", pnlJugador2);
+        tpJugadores.addTab("Martín Estrada Contreras", pnlJugador1); //nombre para el panel 1
+        tpJugadores.addTab("Raúl Vidal", pnlJugador2); // nombre para el panel 2
 
-        btnRepartir.addActionListener(new ActionListener() {
+        btnRepartir.addActionListener(new ActionListener() { //escuchador de repartir cartas
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { //cada escuchador tiene este metodo por defecto
                 repartirCartas();
             }
         });
 
-        btnVerificar.addActionListener(new ActionListener() {
+        btnVerificar.addActionListener(new ActionListener() {  //escuchador de verificar cartas
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {  //cada escuchador tiene este metodo por defecto
                 verificarJugador();
             }
         });
@@ -62,16 +66,30 @@ public class FrmJuego extends JFrame {
     Jugador jugador1 = new Jugador(); //instanciamos jugador para que se repartan las cartas
     Jugador jugador2 = new Jugador();
 
+    //metodo para traer los metodos repartir y mostrar de la clase jugador
     private void repartirCartas() {
         jugador1.repartir();//repartir jugador 1
         jugador1.mostrar(pnlJugador1); //mostrar cartas 1
 
         jugador2.repartir(); //repartir jugador 2
-        jugador2.mostrar(pnlJugador2);//mostrar cartas 2
+        jugador2.mostrar(pnlJugador2);//mostrar cartas jugador 2
        
     }
 
     private void verificarJugador() {
+        int pestañaSeleccionada  = tpJugadores.getSelectedIndex();
+
+        //menu 
+        switch (pestañaSeleccionada) {
+            case 0:
+                JOptionPane.showMessageDialog(null, jugador1.getGrupos());
+                break;
+        
+            case 1:
+            JOptionPane.showMessageDialog(null, jugador2.getGrupos());
+
+                break;
+        }
 
     }
 
