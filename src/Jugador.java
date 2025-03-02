@@ -9,6 +9,7 @@ public class Jugador {
     private int MARGEN = 10; //numero para posicion de  las cartas en el panel
     private Carta[] cartas = new Carta[TOTAL_CARTAS]; // vector para las 10 cartas
     private Random r = new Random();// atributo random que  metodo Carta lo pide
+    int posicion = 0; //indice del for
 
     //metodo repartir  cartas que sera publico porque viene de clase carta
     public void repartir(){
@@ -57,7 +58,7 @@ public class Jugador {
             int posicion = 0; //indice del for
             for( int contador : contadores){
                 if(contador >= 2){
-                    mensaje += Grupo.values()[contador] + " de "+ NombreCarta.values()[posicion]  + "\n";
+                    mensaje += Grupo.values()[contador] + " de "+ NombreCarta.values()[posicion ]  + "\n";
                    
                 }
                 posicion ++;
@@ -67,6 +68,143 @@ public class Jugador {
 
         return mensaje;
     }
+    //metodo para mostrar la escalera 
+    public String mostrarEscalera() {
+       String  mensaje = "No se encontraron escaleras de la misma pinta";
+       
+       // Matriz para contar la cantidad de cartas por pinta y nombre
+       int[][] contador = new int[Pinta.values().length][NombreCarta.values().length];
+   
+       // Llenamos la matriz con la información de las cartas
+       for (Carta carta : cartas) {
+           contador[carta.getPinta().ordinal()][carta.getNombre().ordinal()]++;
+       }
+   
+       // Revisamos cada pinta para detectar escaleras
+       for (int i = 0; i < Pinta.values().length; i++) {
+           int consecutivas = 0; // Contador de cartas consecutivas en la misma pinta
+           int inicioEscalera = -1; // Para registrar el inicio de la escalera
+   
+           for (int j = 0; j < NombreCarta.values().length; j++) {
+               if (contador[i][j] > 0) {
+                   if (inicioEscalera == -1) inicioEscalera = j;
+                   consecutivas++;
+               } else {
+                   if (consecutivas >= 2) break; // Si ya detectamos una escalera, salimos
+                   consecutivas = 0; 
+                   inicioEscalera = -1; //reiniciamos valores
+               }
+           }
+   
+           if (consecutivas >= 2) { 
+               if (mensaje.equals("No se encontraron escaleras de la misma pinta")) { //cambia este mensaje cuando encuentra una segunda escalera
+                   mensaje = "Se encontraron las siguientes escaleras:\n"; 
+               }
+               mensaje += "\n"+"Escalera de " + Pinta.values()[i] + " : ";
+               
+               for (int j = inicioEscalera; j < NombreCarta.values().length && contador[i][j] > 0; j++) {
+                   mensaje +=  NombreCarta.values()[j] + ", ";
+               }
+             
+           }
+       }
+   
+       return mensaje;
+   
+      
+    }
+    //metodo puntuacion 
+    public String puntuacion() {
+        String  mensaje = "No tiene puntos" ;
+        int puntaje = 0; // acumulador para sumar el puntaje 
+
+        
+        //obtener las cartas de los metodos anteriores 
+        String grupos = getGrupos();
+        String escaleras = mostrarEscalera();
+
+        //vector para conocer las cartas que no pertenecen ni a grupos ni a escaleras
+       
+        int[] cartasSueltas = new int[NombreCarta.values().length];
+
+        boolean hayPuntos = false;
+
+    // Verificar cada carta
+    for (Carta carta : cartas) {
+        int indice = carta.getNombre().ordinal();
+
+        // Si la carta no esta en grupos y no esta en escaleras, sera una carta suelta y por consiguiente habra puntos
+        if (!grupos.contains(carta.getNombre().name()) && !escaleras.contains(carta.getNombre().name())) { //.name es para que de nombre carta solo me llegue el nombre
+            cartasSueltas[indice] = 1;
+            hayPuntos = true;
+            puntaje += valorCarta(carta.getNombre()); // valor carta se va a sumar y va a quedar en nuestro acumulador 
+        }
+    }
+
+    
+    if (hayPuntos) {
+        mensaje = "La puntuacion de las cartas sueltas es:  " + puntaje + " " + " y las cartas son : " + " \n";
+       
+        String cartasNoPertenecen = "";  //este es nuestro acumulador para las cartas sueltas 
+
+        for (int i = 0; i < cartasSueltas.length; i++) {
+            if (cartasSueltas[i] == 1) {
+                cartasNoPertenecen += 
+                mensaje += NombreCarta.values()[i] + ". " + " \n" ;
+                
+            }
+           
+        }
+
+        
+
+        
+    }
+
+    return mensaje;  
 }
+//metodo para tener los valores de las cartas 
+private int valorCarta (NombreCarta nombre){
+
+    switch (nombre) { //menu donde utilizaremos el nombre que ya teniamos en NombreCarta
+        case DOS: return 2;
+        case TRES: return 3;
+        case CUATRO: return 4;
+        case CINCO: return 5;
+        case SEIS: return 6;
+        case SIETE: return 7;
+        case OCHO: return 8;
+        case NUEVE:return 9;
+        case DIEZ: return 10;
+        case JACK: return 10;
+        case QUEEN: return 10;
+        case KING: return 10;
+        case AS: return 10;
+    
+        default: return 0;
+           
+    }
+
+
+
+   
+}
+       
+
+    
+}
+                      
+    
+
+
+
+                
+    
+
+        
+
+      
+    
+
 
 
